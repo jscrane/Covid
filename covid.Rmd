@@ -10,6 +10,11 @@ params:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+## Introduction
+
+We perform simple mathematical modelling from government-published data, of recorded cases of Covid-19 in the Republic of Ireland.
+
+For a refresher on exponential growth, please see the 3Blue1Brown [video](https://www.youtube.com/watch?v=Kas0tIxDvrg).
 
 ## Reading and Plotting the data
 
