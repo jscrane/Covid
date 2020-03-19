@@ -38,8 +38,12 @@ f <- log(total_cases)~date
 plot(f, data=d, ylab="log(cases)", main="Recorded cases")
 m <- lm(f, data=d)
 abline(m)
-legend("bottomright", bty="n", legend=paste("r^2: ", format(summary(m)$r.squared, digits=2)))
+r2 <- summary(m)$r.squared
+dbl <- 1/sqrt(2)/coef(m)[2]
+legend("bottomright", bty="n", legend=c(paste("r^2: ", format(r2, digits=2)), paste("d: ", format(dbl, digits=2))))
 ```
+
+The parameter d in the plot is the doubling time in days, using the [rule of 70](https://en.wikipedia.org/wiki/Rule_of_72).
 
 We can predict the number of cases at the end of the month and see it is in line with estimates from the government.
 
