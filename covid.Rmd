@@ -1,0 +1,39 @@
+---
+title: "Covid-19 in Ireland"
+output: 
+  html_document:
+    theme: united
+params:
+  output_dir: "docs"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Reading and Plotting the data
+
+The daily data is available at an Irish Government [website](https://www.gov.ie/en/news/7e0924-latest-updates-on-covid-19-coronavirus/).
+
+```{r message=FALSE}
+d <- read.csv(file="~/src/covid/data.csv", header=TRUE, sep=",")
+d[is.na(d)] <- 0
+d$date <- as.Date(d$date)
+d$day <- as.integer(d$date - d$date[1])
+d$total_cases <- cumsum(d$cases)
+d$total_deaths <- cumsum(d$deaths)
+```
+
+From the plot below, it is clear we are currently in the exponential-growth phase.
+
+```{r}
+f <- log(total_cases)~date
+plot(f, data=d, ylab="log(cases)", main="Recorded cases")
+m <- lm(f, data=d)
+abline(m)
+legend("bottomright", bty="n", legend=paste("r^2: ", format(summary(m)$r.squared, digits=2)))
+```
+
+```{r}
+exp(predict(m, newdata=data.frame(date = as.Date("2020-03-30"))))
+```
