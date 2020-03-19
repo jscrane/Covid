@@ -16,9 +16,9 @@ We perform simple mathematical modelling from government-published data, of reco
 
 For a refresher on exponential growth, please see the 3Blue1Brown [video](https://www.youtube.com/watch?v=Kas0tIxDvrg).
 
-## Reading and Plotting the data
+## The Data
 
-The daily data is available at an Irish Government [website](https://www.gov.ie/en/news/7e0924-latest-updates-on-covid-19-coronavirus/).
+Data is published daily at an Irish Government [website](https://www.gov.ie/en/news/7e0924-latest-updates-on-covid-19-coronavirus/).
 
 ```{r message=FALSE}
 d <- read.csv(file="~/src/covid/data.csv", header=TRUE, sep=",")
@@ -29,7 +29,9 @@ d$total_cases <- cumsum(d$cases)
 d$total_deaths <- cumsum(d$deaths)
 ```
 
-From the plot below, it is clear we are currently in the exponential-growth phase.
+## Exponential Phase
+
+From the plot below, it is clear that as of 19 March, we are currently in the exponential-growth phase. (An r-squared value of 0.97 indicates a very good fit.)
 
 ```{r}
 f <- log(total_cases)~date
@@ -39,6 +41,19 @@ abline(m)
 legend("bottomright", bty="n", legend=paste("r^2: ", format(summary(m)$r.squared, digits=2)))
 ```
 
+We can predict the number of cases at the end of the month and see it is in line with estimates from the government.
+
 ```{r}
 exp(predict(m, newdata=data.frame(date = as.Date("2020-03-30"))))
 ```
+
+## Logistic Phase
+In the real world, exponentials don't continue indefinitely; after some time, they flatten into a [logistic](https://en.wikipedia.org/wiki/Logistic_function) (sigmoid) [curve](http://www.sci.wsu.edu/math/faculty/hudelson/logisticlesson.html).
+
+```{r}
+d$lag.cases = c(NA,head(d$cases, -1))
+d$growth = d$cases / d$lag.cases
+plot(growth ~ date, data=d)
+```
+
+The exponential phase ends when the growth rate slows to 1. (However this is not currently the case: the data is too noisy.)
