@@ -14,14 +14,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 We perform simple mathematical modelling from government-published data, of recorded cases of Covid-19 in the Republic of Ireland.
 
-For a refresher on exponential growth, please see the 3Blue1Brown [video](https://www.youtube.com/watch?v=Kas0tIxDvrg).
+For a refresher on exponential growth and epidemics, please see the 3Blue1Brown [video](https://www.youtube.com/watch?v=Kas0tIxDvrg).
 
 ## The Data
 
 Data is published daily at an Irish Government [website](https://www.gov.ie/en/news/7e0924-latest-updates-on-covid-19-coronavirus/).
 
 ```{r message=FALSE}
-d <- read.csv(file="~/src/covid/data.csv", header=TRUE, sep=",")
+d <- read.csv(file="~/src/Covid/data.csv", header=TRUE, sep=",")
 d[is.na(d)] <- 0
 d$date <- as.Date(d$date)
 d$day <- as.integer(d$date - d$date[1])
@@ -40,10 +40,11 @@ m <- lm(f, data=d)
 abline(m)
 r2 <- summary(m)$r.squared
 dbl <- log(2)/coef(m)[2]
-legend("bottomright", bty="n", legend=c(paste("r^2: ", format(r2, digits=2)), paste("d: ", format(dbl, digits=2))))
+wx <- 2**(7.0 / dbl)
+legend("bottomright", bty="n", legend=c(paste("r^2:", format(r2, digits=2)), paste("dbl:", format(dbl, digits=2), "days"), paste("wx:", format(wx, digits=2))))
 ```
 
-The parameter d in the plot is the doubling time in days, using the [rule of 70](https://en.wikipedia.org/wiki/Rule_of_72).
+The parameter $dbl$ in the plot is the doubling time in days, using the [rule of 70](https://en.wikipedia.org/wiki/Rule_of_72). The parameter $wx$ is the weekly growth factor.
 
 We can predict the number of cases at the end of the month and see it is in line with estimates from the government.
 
