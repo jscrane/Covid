@@ -18,15 +18,17 @@ For a refresher on exponential growth and epidemics, please see the 3Blue1Brown 
 
 ## The Data
 
-Data is published daily at an Irish Government [website](https://www.gov.ie/en/news/7e0924-latest-updates-on-covid-19-coronavirus/).
+Data is published daily at an Irish Government [website](https://www.gov.ie/en/news/7e0924-latest-updates-on-covid-19-coronavirus/) and manually entered into a data-file. We use only the daily increases in cases and deaths.
 
-```{r message=FALSE}
+```{r}
 d <- read.csv(file="~/src/Covid/data.csv", header=TRUE, sep=",")
 d[is.na(d)] <- 0
 d$date <- as.Date(d$date)
 d$day <- as.integer(d$date - d$date[1])
 d$total_cases <- cumsum(d$cases)
 d$total_deaths <- cumsum(d$deaths)
+t <- tail(d,1)
+paste(t$date, "total:", t$total_cases, "cases,", t$total_deaths, "deaths")
 ```
 
 ## Exponential Phase

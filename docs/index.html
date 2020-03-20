@@ -195,13 +195,16 @@ $(document).ready(function () {
 </div>
 <div id="the-data" class="section level2">
 <h2>The Data</h2>
-<p>Data is published daily at an Irish Government <a href="https://www.gov.ie/en/news/7e0924-latest-updates-on-covid-19-coronavirus/">website</a>.</p>
+<p>Data is published daily at an Irish Government <a href="https://www.gov.ie/en/news/7e0924-latest-updates-on-covid-19-coronavirus/">website</a> and manually entered into a data-file. We use only the daily increases in cases and deaths.</p>
 <pre class="r"><code>d &lt;- read.csv(file=&quot;~/src/Covid/data.csv&quot;, header=TRUE, sep=&quot;,&quot;)
 d[is.na(d)] &lt;- 0
 d$date &lt;- as.Date(d$date)
 d$day &lt;- as.integer(d$date - d$date[1])
 d$total_cases &lt;- cumsum(d$cases)
-d$total_deaths &lt;- cumsum(d$deaths)</code></pre>
+d$total_deaths &lt;- cumsum(d$deaths)
+t &lt;- tail(d,1)
+paste(t$date, &quot;total:&quot;, t$total_cases, &quot;cases,&quot;, t$total_deaths, &quot;deaths&quot;)</code></pre>
+<pre><code>## [1] &quot;2020-03-19 total: 557 cases, 3 deaths&quot;</code></pre>
 </div>
 <div id="exponential-phase" class="section level2">
 <h2>Exponential Phase</h2>
