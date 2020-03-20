@@ -51,7 +51,7 @@ The parameter $dbl$ in the plot is the doubling time in days, computed from the 
 We can predict the number of cases at the end of the month and see it is in line with estimates from the government.
 
 ```{r}
-exp(predict(m, newdata=data.frame(date = as.Date("2020-03-30"))))
+10**(predict(m, newdata=data.frame(date = as.Date("2020-03-30"))))
 ```
 
 ## Logistic Phase
