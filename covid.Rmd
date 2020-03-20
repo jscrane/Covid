@@ -36,12 +36,12 @@ paste(t$date, "total:", t$total_cases, "cases,", t$total_deaths, "deaths")
 From the plot below, it is clear that as of 19 March, we are currently in the exponential-growth phase. (An r-squared value of 0.97 indicates a very good fit.)
 
 ```{r}
-f <- log(total_cases)~date
-plot(f, data=d, ylab="ln(cases)", main="Recorded cases")
+f <- log10(total_cases)~date
+plot(f, data=d, ylab="log(cases)", main="Recorded cases")
 m <- lm(f, data=d)
 abline(m)
 r2 <- summary(m)$r.squared
-dbl <- log(2)/coef(m)[2]
+dbl <- log10(2)/coef(m)[2]
 wx <- 2**(7 / dbl)
 legend("bottomright", bty="n", legend=c(paste("r^2:", format(r2, digits=2)), paste("dbl:", format(dbl, digits=2), "days"), paste("wx:", format(wx, digits=2))))
 ```
