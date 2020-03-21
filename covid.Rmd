@@ -55,11 +55,11 @@ We can predict the number of cases at the end of the month and see it is in line
 ```
 
 ### Notes
-Becoming a statistic on this graph requires time and effort; the steps [are](https://www2.hse.ie/conditions/coronavirus/coronavirus.html):
+Becoming a statistic on this graph requires [time and effort](https://www2.hse.ie/conditions/coronavirus/coronavirus.html):
 
   * call a GP
   * convince them of symptoms
-  * be tested (at test centre, or home)
+  * be tested by appointment, either at home, or at a test centre
   * wait for result
 
 It is not clear what the average start-to-finish delay is. The [PCR test](https://en.wikipedia.org/wiki/COVID-19_testing) can take up to 2 days.
