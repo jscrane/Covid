@@ -196,14 +196,14 @@ $(document).ready(function () {
 <div id="the-data" class="section level2">
 <h2>The Data</h2>
 <p>Data is published daily at an Irish Government <a href="https://www.gov.ie/en/news/7e0924-latest-updates-on-covid-19-coronavirus/">website</a> and manually entered into a data-file. We use only the daily increases in cases and deaths.</p>
-<pre class="r"><code>d &lt;- read.csv(file=&quot;~/src/Covid/data.csv&quot;, header=TRUE, sep=&quot;,&quot;)
+<pre class="r"><code>d &lt;- read.csv(file=&quot;cases.csv&quot;, header=TRUE, sep=&quot;,&quot;)
 d[is.na(d)] &lt;- 0
 d$date &lt;- as.Date(d$date)
 d$day &lt;- as.integer(d$date - d$date[1])
 d$total_cases &lt;- cumsum(d$cases)
 d$total_deaths &lt;- cumsum(d$deaths)
-t &lt;- tail(d,1)
-paste(t$date, &quot;total:&quot;, t$total_cases, &quot;cases,&quot;, t$total_deaths, &quot;deaths&quot;)</code></pre>
+ld &lt;- tail(d, 1)
+paste(ld$date, &quot;total:&quot;, ld$total_cases, &quot;cases,&quot;, ld$total_deaths, &quot;deaths&quot;)</code></pre>
 <pre><code>## [1] &quot;2020-03-20 total: 683 cases, 3 deaths&quot;</code></pre>
 </div>
 <div id="exponential-phase" class="section level2">
@@ -233,8 +233,12 @@ legend(&quot;bottomright&quot;, bty=&quot;n&quot;, legend=c(paste(&quot;r^2:&quo
 <li>wait for result</li>
 </ul>
 <p>It is not clear what the average start-to-finish delay is. The <a href="https://en.wikipedia.org/wiki/COVID-19_testing">PCR test</a> can take up to 2 days.</p>
-<p>Statistics on testing are only published weekly. However, extrapolating the last <a href="https://www.rte.ie/news/coronavirus/2020/0317/1123663-coronavirus-ireland/">figure</a> of about 4% positive with the latest number of cases gives a rough estimate:</p>
-<pre class="r"><code>t$total_cases * 6636 / 292</code></pre>
+<p>Statistics on testing are only published weekly. However, extrapolating the last <a href="https://www.rte.ie/news/coronavirus/2020/0317/1123663-coronavirus-ireland/">figure</a> with the latest number of cases gives a rough estimate:</p>
+<pre class="r"><code>t &lt;- read.csv(file=&quot;testing.csv&quot;, header=TRUE, sep=&quot;,&quot;)
+t$date &lt;- as.Date(t$date)
+m &lt;- merge(d, t, by=&quot;date&quot;)
+lm &lt;- tail(m, 1)
+ld$total_cases * lm$tests / lm$total_cases</code></pre>
 <pre><code>## [1] 15521.88</code></pre>
 </div>
 </div>
