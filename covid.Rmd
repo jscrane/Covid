@@ -36,7 +36,7 @@ paste(t$date, "total:", t$total_cases, "cases,", t$total_deaths, "deaths")
 From the plot below, it is clear that as of 19 March, we are currently in the exponential-growth phase. (An r-squared value of 0.97 indicates a very good fit.)
 
 ```{r}
-f <- log10(total_cases)~date
+f <- log10(total_cases) ~ date
 plot(f, data=d, ylab="log(cases)", main="Recorded cases")
 m <- lm(f, data=d)
 abline(m)
@@ -52,6 +52,22 @@ We can predict the number of cases at the end of the month and see it is in line
 
 ```{r}
 10**(predict(m, newdata=data.frame(date = as.Date("2020-03-30"))))
+```
+
+### Notes
+Becoming a statistic on this graph requires time and effort; the steps [are](https://www2.hse.ie/conditions/coronavirus/coronavirus.html):
+
+  * call a GP
+  * convince them of symptoms
+  * be tested (at test centre, or home)
+  * wait for result
+
+It is not clear what the average start-to-finish delay is. The [PCR test](https://en.wikipedia.org/wiki/COVID-19_testing) can take up to 2 days.
+
+Statistics on testing are only published weekly. However, extrapolating the last [figure](https://www.rte.ie/news/coronavirus/2020/0317/1123663-coronavirus-ireland/) of about 4% positive with the latest number of cases gives a rough estimate:
+
+```{r}
+t$total_cases * 6636 / 292
 ```
 
 ## Logistic Phase
