@@ -51,7 +51,9 @@ The parameter $dbl$ in the plot is the doubling time in days, computed from the 
 We can predict the number of cases at the end of the month and see it is in line with estimates from the government.
 
 ```{r}
-10**(predict(m, newdata=data.frame(date = as.Date("2020-03-30"))))
+pd <- as.Date("2020-03-30")
+p <- 10**(predict(m, newdata=data.frame(date = pd)))
+paste(pd, "predict", format(p, digits=2), "cases")
 ```
 
 ### Notes
@@ -64,15 +66,18 @@ Becoming a statistic on this graph requires [time and effort](https://www2.hse.i
 
 It is not clear what the average start-to-finish delay is. The [PCR test](https://en.wikipedia.org/wiki/COVID-19_testing) can take up to 2 days.
 
-Statistics on testing are only published weekly. However, extrapolating the last [figure](https://www.rte.ie/news/coronavirus/2020/0317/1123663-coronavirus-ireland/) with the latest number of cases gives a rough estimate:
+Statistics on testing are only published weekly. However, we can get a rough estimate by combining the [latest figure](https://www.rte.ie/news/coronavirus/2020/0317/1123663-coronavirus-ireland/) with the latest number of cases:
 
 ```{r}
 t <- read.csv(file="testing.csv", header=TRUE, sep=",")
 t$date <- as.Date(t$date)
 m <- merge(d, t, by="date")
 lm <- tail(m, 1)
-ld$total_cases * lm$tests / lm$total_cases
+lt <- ld$total_cases * lm$tests / lm$total_cases
+paste(ld$date, "positive rate:", format(lm$total_cases / lm$tests, digits=2), "tests:", format(lt, digits=2), "(estimated)")
 ```
+
+(This assumes that the rate of positives remains constant over the interval since the test figures were published.)
 
 ## Logistic Phase
 In the real world, exponentials don't continue indefinitely; after some time, they flatten into a [logistic](https://en.wikipedia.org/wiki/Logistic_function) (sigmoid) [curve](http://www.sci.wsu.edu/math/faculty/hudelson/logisticlesson.html).
