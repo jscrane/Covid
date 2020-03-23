@@ -37,7 +37,7 @@ From the plot below, it is clear that as of 19 March, we are currently in the ex
 
 ```{r}
 f <- log10(total_cases) ~ date
-plot(f, data=d, ylab="log(cases)", main="Recorded cases")
+plot(f, data=d, ylab="log(cases)", main="Confirmed cases")
 m <- lm(f, data=d)
 abline(m)
 r2 <- summary(m)$r.squared
@@ -64,7 +64,7 @@ Becoming a statistic on this graph requires [time and effort](https://www2.hse.i
   * be tested by appointment, either at home, or at a test centre
   * wait for result
 
-It is not clear what the average start-to-finish delay is. The [PCR test](https://en.wikipedia.org/wiki/COVID-19_testing) can take up to 2 days.
+It is not clear what the average start-to-finish time is. However, the [PCR test](https://en.wikipedia.org/wiki/COVID-19_testing) can take up to 2 days; and on 22 March, the HSE [said](https://www.thejournal.ie/covid19-tests-ireland-5054061-Mar2020/) that the average waiting time to get a test was 4-5 days (and there was a backlog of 40000).
 
 Statistics on testing are only published weekly. However, we can get a rough estimate by combining the [latest figure](https://www.rte.ie/news/coronavirus/2020/0317/1123663-coronavirus-ireland/) with the latest number of cases:
 
@@ -78,6 +78,10 @@ paste(ld$date, "positive rate:", format(lm$total_cases / lm$tests, digits=2), "t
 ```
 
 (This assumes that the rate of positives remains constant over the interval since the test figures were published.)
+
+From all this, it is possible that the testing system has been saturated and this is limiting the number of cases reported per day around this time. (This can be seen in a flattening of the graph above.) 
+
+If 4% of the backlog tested positive, the number of confirmed cases on the 22 March would have been 2500. Furthermore, the cases actually confirmed on a given day could be up to a week old.
 
 ## Logistic Phase
 In the real world, exponentials don't continue indefinitely; after some time, they flatten into a [logistic](https://en.wikipedia.org/wiki/Logistic_function) (sigmoid) [curve](http://www.sci.wsu.edu/math/faculty/hudelson/logisticlesson.html).
