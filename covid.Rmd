@@ -33,12 +33,14 @@ paste(ld$date, "total:", ld$total_cases, "cases,", ld$total_deaths, "deaths")
 
 ## Exponential Phase
 
-From the plot below, it is clear that as of 19 March, we are currently in the exponential-growth phase. (An r-squared value of 0.97 indicates a very good fit.)
+### Confirmed Cases
+
+From the plot below, it is clear that growth up to mid-March, is in an exponential-growth phase. (The r-squared value indicates a good fit.)
 
 ```{r}
-f <- log10(total_cases) ~ date
-plot(f, data=d, ylab="log(cases)", main="Confirmed cases")
-m <- lm(f, data=d)
+fc <- log10(total_cases) ~ date
+plot(fc, data=d, ylab="log(cases)", main="Confirmed cases")
+m <- lm(fc, data=d)
 abline(m)
 r2 <- summary(m)$r.squared
 dbl <- log10(2)/coef(m)[2]
@@ -48,15 +50,16 @@ legend("bottomright", bty="n", legend=c(paste("r^2:", format(r2, digits=2)), pas
 
 The parameter $dbl$ in the plot is the doubling time in days, computed from the best-fit slope (cf. the [rule of 70](https://en.wikipedia.org/wiki/Rule_of_72)). The parameter $wx$ is the weekly growth factor.
 
-We can predict the number of cases at the end of the month and see it is in line with estimates from the government.
+We can predict the number of cases after a week.
 
 ```{r}
-pd <- as.Date("2020-03-30")
+pd <- Sys.Date() + 7
 p <- 10**(predict(m, newdata=data.frame(date = pd)))
 paste(pd, "predict", format(p, digits=2), "cases")
 ```
 
-### Notes
+#### Notes on Testing
+
 Becoming a statistic on this graph requires [time and effort](https://www2.hse.ie/conditions/coronavirus/coronavirus.html):
 
   * call a GP
@@ -81,7 +84,31 @@ paste(ld$date, "positive rate:", format(lm$total_cases / lm$tests, digits=2), "t
 
 From all this, it is possible that the testing system has been saturated and this is limiting the number of cases reported per day around this time. (This can be seen in a flattening of the graph above.) 
 
-If 4% of the backlog tested positive, the number of confirmed cases on the 22 March would have been 2500. Furthermore, the cases actually confirmed on a given day could be up to a week old.
+In addition, the cases actually confirmed on a given day could be up to a week old.
+
+### Deaths
+
+While the extent of testing certainly influences the number of reported cases, a more
+reliable proxy for the spread of the disease should be the number of deaths. (However it isn't clear how a death is reported as due to the disease: if untested while alive, is a test carried out post mortem?)
+
+```{r}
+fd <- log10(total_deaths) ~ date
+dd <- d[which(d$total_deaths > 0),]
+plot(fd, data=dd, ylab="log(deaths)", main="Deaths")
+dm <- lm(fd, data=dd)
+abline(dm)
+r2 <- summary(dm)$r.squared
+dbl <- log10(2)/coef(dm)[2]
+wx <- 2**(7 / dbl)
+legend("bottomright", bty="n", legend=c(paste("r^2:", format(r2, digits=2)), paste("dbl:", format(dbl, digits=2), "days"), paste("wx:", format(wx, digits=2))))
+```
+Predicting the number of deaths after a week:
+
+```{r}
+pd <- Sys.Date() + 7
+p <- 10**(predict(dm, newdata=data.frame(date = pd)))
+paste(pd, "predict", format(p, digits=2), "deaths")
+```
 
 ## Logistic Phase
 In the real world, exponentials don't continue indefinitely; after some time, they flatten into a [logistic](https://en.wikipedia.org/wiki/Logistic_function) (sigmoid) [curve](http://www.sci.wsu.edu/math/faculty/hudelson/logisticlesson.html).
