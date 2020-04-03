@@ -102,6 +102,7 @@ dbl <- log10(2)/coef(dm)[2]
 wx <- 2**(7 / dbl)
 legend("bottomright", bty="n", legend=c(paste("r^2:", format(r2, digits=2)), paste("dbl:", format(dbl, digits=2), "days"), paste("wx:", format(wx, digits=2))))
 ```
+
 Predicting the number of deaths after a week:
 
 ```{r}
