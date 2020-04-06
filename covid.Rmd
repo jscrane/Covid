@@ -69,6 +69,8 @@ Becoming a statistic on this graph requires [time and effort](https://www2.hse.i
 
 It is not clear what the average start-to-finish time is. However, the [PCR test](https://en.wikipedia.org/wiki/COVID-19_testing) can take up to 2 days; and on 22 March, the HSE [said](https://www.thejournal.ie/covid19-tests-ireland-5054061-Mar2020/) that the average waiting time to get a test was 4-5 days (and there was a backlog of 40000).
 
+#### Prediction
+
 Statistics on testing are only published weekly. However, we can get a rough estimate by combining the [latest figure](https://www.rte.ie/news/coronavirus/2020/0317/1123663-coronavirus-ireland/) with the latest number of cases:
 
 ```{r}
@@ -89,7 +91,7 @@ In addition, the cases actually confirmed on a given day could be up to a week o
 ### Deaths
 
 While the extent of testing certainly influences the number of reported cases, a more
-reliable proxy for the spread of the disease should be the number of deaths. (However it isn't clear how a death is reported as due to the disease: if untested while alive, is a test carried out post mortem?)
+reliable proxy for the spread of the disease should be the number of deaths.
 
 ```{r}
 fd <- log10(total_deaths) ~ date
@@ -102,6 +104,14 @@ dbl <- log10(2)/coef(dm)[2]
 wx <- 2**(7 / dbl)
 legend("bottomright", bty="n", legend=c(paste("r^2:", format(r2, digits=2)), paste("dbl:", format(dbl, digits=2), "days"), paste("wx:", format(wx, digits=2))))
 ```
+
+#### Notes on Deaths
+
+A death due to the disease may be reported late, or not at all:
+  * Although deaths are reported every 24 hours it does not follow that all of the reported deaths occurred during that time
+  * If an untested patient dies are they tested post mortem?
+
+#### Prediction
 
 Predicting the number of deaths after a week:
 
