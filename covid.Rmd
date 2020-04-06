@@ -108,6 +108,7 @@ legend("bottomright", bty="n", legend=c(paste("r^2:", format(r2, digits=2)), pas
 #### Notes on Deaths
 
 A death due to the disease may be reported late, or not at all:
+
   * Although deaths are reported every 24 hours it does not follow that all of the reported deaths occurred during that time
   * If an untested patient dies are they tested post mortem?
 
