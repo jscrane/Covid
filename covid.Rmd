@@ -129,6 +129,7 @@ In the real world, exponentials don't continue indefinitely; after some time, th
 d$lag.cases = c(NA,head(d$cases, -1))
 d$growth = d$cases / d$lag.cases
 plot(growth ~ date, data=d)
+abline(h=1, lty="dashed")
 ```
 
 The exponential phase ends when the growth rate slows to 1. (However this is not currently the case: the data is too noisy.)
