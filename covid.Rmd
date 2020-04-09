@@ -46,9 +46,12 @@ r2 <- summary(m)$r.squared
 dbl <- log10(2)/coef(m)[2]
 wx <- 2**(7 / dbl)
 legend("bottomright", bty="n", legend=c(paste("r^2:", format(r2, digits=2)), paste("dbl:", format(dbl, digits=2), "days"), paste("wx:", format(wx, digits=2))))
+abline(v=as.Date("2020-03-27"), lty="dotted")
 ```
 
-The parameter $dbl$ in the plot is the doubling time in days, computed from the best-fit slope (cf. the [rule of 70](https://en.wikipedia.org/wiki/Rule_of_72)). The parameter $wx$ is the weekly growth factor.
+  * the parameter $dbl$ in the plot is the doubling time in days, computed from the best-fit slope (cf. the [rule of 70](https://en.wikipedia.org/wiki/Rule_of_72))
+  * the parameter $wx$ is the weekly growth factor
+  * the vertical line is the day on which restrictions on movement were introduced
 
 We can predict the number of cases after a week.
 
@@ -103,6 +106,7 @@ r2 <- summary(dm)$r.squared
 dbl <- log10(2)/coef(dm)[2]
 wx <- 2**(7 / dbl)
 legend("bottomright", bty="n", legend=c(paste("r^2:", format(r2, digits=2)), paste("dbl:", format(dbl, digits=2), "days"), paste("wx:", format(wx, digits=2))))
+abline(v=as.Date("2020-03-27"), lty="dotted")
 ```
 
 #### Notes on Deaths
